@@ -60,6 +60,36 @@ app.post("/add-meetUp", async (req, res) => {
   }
 });
 
+
+//*************** to get data by Id ***************
+async function dataById(meetUpId) {
+  try {
+    const findData = await MeetUps.findById(meetUpId);
+    return findData;
+  } catch (error) {
+    console.log("Error in connecting to database.", error);
+    throw error;
+  }
+}
+
+app.get("/meetUp/:meetUpId", async (req, res) => {
+  try {
+    const filteredData = await dataById(req.params.meetUpId);
+    if (filteredData) {
+      res
+        .status(200)
+        .json({ message: "Found data successfully.", filteredData });
+    } else {
+      res.status(404).json({ error: "Failed to find data by id." });
+    }
+  } catch {
+    res.status(500).json({ error: "Error find the data by id." });
+  }
+});
+
+
+
+
 //*************** to get data by title ***************
 async function dataByTitle(eventTitle) {
   try {
@@ -85,6 +115,34 @@ app.get("/meetUp/:eventTitle", async (req, res) => {
     res.status(500).json({ error: "Error find the data." });
   }
 });
+
+
+//*************** to get data by tags ***************
+async function dataByTags(meetUpTags) {
+  try {
+    const findData = await MeetUps.find({ eventTags: meetUpTags });
+    return findData;
+  } catch (error) {
+    console.log("Error in connecting to database.", error);
+    throw error;
+  }
+}
+
+app.get("/meetUp/tags/:meetUpTags", async (req, res) => {
+  try {
+    const filteredData = await dataByTags(req.params.meetUpTags);
+    if (filteredData) {
+      res
+        .status(200)
+        .json({ message: "Found data successfully.", filteredData });
+    } else {
+      res.status(404).json({ error: "Failed to find data by tags." });
+    }
+  } catch {
+    res.status(500).json({ error: "Error find the data by tags." });
+  }
+});
+
 
 //**************** to get event by Type ****************
 async function eventByType(eventType) {
