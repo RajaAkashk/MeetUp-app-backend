@@ -101,7 +101,7 @@ async function dataByTitle(eventTitle) {
   }
 }
 
-app.get("/meetUp/:eventTitle", async (req, res) => {
+app.get("/meetUp/event/title/:eventTitle", async (req, res) => {
   try {
     const filteredData = await dataByTitle(req.params.eventTitle);
     if (filteredData) {
